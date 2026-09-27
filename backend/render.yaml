@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: kisan-ai-backend
+    env: python
+    region: oregon
+    buildCommand: "pip install -r requirements.txt && python scripts/build_kb.py"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.15
+      - key: ALLOWED_ORIGINS
+        value: "https://kisan-ai.vercel.app,http://localhost:5173"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false

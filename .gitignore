@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/routers/__pycache__/
+backend/app/services/__pycache__/
+backend/app/models/__pycache__/
+backend/tests/__pycache__/
+__pycache__/
+*.pyc
+.venv/
+env/
+venv/
+
+# Production builds
+dist/
+dist-ssr/
+build/
+project/node_modules/
+project/dist/
+
+# Logs & Environment
+*.log
+.env
+.env.local
+.DS_Store
+.idea/
+.vscode/
+
+# Python cache & temp
+.pytest_cache/
