@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { useApp } from '@/context/AppContext';
 import { PipelineIndicator } from '@/components/shared/PipelineIndicator';
 
 export function ProcessingPage() {
   const { t, lang } = useLanguage();
+  const { currentResult, navigate } = useApp();
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
@@ -14,6 +16,24 @@ export function ProcessingPage() {
     timers.push(setTimeout(() => setStage(3), 2200));
     return () => timers.forEach(clearTimeout);
   }, []);
+
+  // Safety fallback: navigate to results as soon as currentResult is ready
+  useEffect(() => {
+    if (currentResult) {
+      const timer = setTimeout(() => {
+        navigate('results');
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+
+    // If no result after 7 seconds, return gracefully to diagnosis page
+    const safetyTimer = setTimeout(() => {
+      if (!currentResult) {
+        navigate('diagnosis');
+      }
+    }, 7000);
+    return () => clearTimeout(safetyTimer);
+  }, [currentResult, navigate]);
 
   return (
     <div className="py-12 md:py-20">

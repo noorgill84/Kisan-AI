@@ -11,7 +11,7 @@ import type { CropType, AnalysisResult } from '@/types';
 
 export function DiagnosisPage() {
   const { t, lang } = useLanguage();
-  const { navigate, setCurrentResult, userId } = useApp();
+  const { navigate, setCurrentResult, addToHistory, userId } = useApp();
 
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [textDescription, setTextDescription] = useState('');
@@ -64,9 +64,12 @@ export function DiagnosisPage() {
         language: lang,
         cropType: cropType || undefined,
       });
+
       setCurrentResult(result);
+      addToHistory(result);
       navigate('results');
-    } catch {
+    } catch (err) {
+      console.error('[KisanAI] Submission error:', err);
       setFormError(t.diagnosis.errorNoInput);
       setIsSubmitting(false);
       navigate('diagnosis');

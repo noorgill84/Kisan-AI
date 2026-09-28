@@ -19,6 +19,7 @@ const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env as Record<string, string>).API_BASE_URL || 'http://localhost:8000';
 
 const MOCK_DELAY = 1200;
+const FETCH_TIMEOUT_MS = 6000; // 6 seconds max before falling back gracefully
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -26,6 +27,25 @@ function delay(ms: number): Promise<void> {
 
 function randomId(): string {
   return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
+/**
+ * Fetch wrapper with built-in timeout to ensure UI never hangs on slow server cold starts
+ */
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = FETCH_TIMEOUT_MS): Promise<Response> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(id);
+    return response;
+  } catch (err) {
+    clearTimeout(id);
+    throw err;
+  }
 }
 
 // ─── Mock Data Fallbacks ─────────────────────────────────────────────
@@ -257,7 +277,7 @@ export async function analyzeInput(req: AnalyzeRequest): Promise<AnalysisResult>
   }
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/analyze`, {
+    const res = await fetchWithTimeout(`${API_BASE_URL}/api/analyze`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -270,7 +290,7 @@ export async function analyzeInput(req: AnalyzeRequest): Promise<AnalysisResult>
         language: req.language,
         cropType: req.cropType,
       }),
-    });
+    }, FETCH_TIMEOUT_MS);
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({ detail: res.statusText }));
@@ -279,7 +299,7 @@ export async function analyzeInput(req: AnalyzeRequest): Promise<AnalysisResult>
 
     return await res.json();
   } catch (err) {
-    console.warn('[KisanAI API] analyzeInput endpoint unreachable, using fallback:', err);
+    console.warn('[KisanAI API] analyzeInput endpoint unreachable or timed out, using fallback:', err);
     return mockAnalyzeInput(req);
   }
 }
@@ -294,10 +314,10 @@ export async function transcribeAudio(req: TranscribeRequest): Promise<Transcrib
     formData.append('file', req.audioBlob, 'audio.webm');
     formData.append('language', req.language);
 
-    const res = await fetch(`${API_BASE_URL}/api/transcribe`, {
+    const res = await fetchWithTimeout(`${API_BASE_URL}/api/transcribe`, {
       method: 'POST',
       body: formData,
-    });
+    }, FETCH_TIMEOUT_MS);
 
     if (!res.ok) {
       const errJson = await res.json().catch(() => ({ detail: res.statusText }));
@@ -306,7 +326,7 @@ export async function transcribeAudio(req: TranscribeRequest): Promise<Transcrib
 
     return await res.json();
   } catch (err) {
-    console.warn('[KisanAI API] transcribeAudio endpoint unreachable, using fallback:', err);
+    console.warn('[KisanAI API] transcribeAudio endpoint unreachable or timed out, using fallback:', err);
     return mockTranscribeAudio(req);
   }
 }
@@ -332,11 +352,11 @@ export async function getHistory(userId?: string): Promise<HistoryItem[]> {
   }
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/history?userId=${encodeURIComponent(effectiveUserId)}`);
+    const res = await fetchWithTimeout(`${API_BASE_URL}/api/history?userId=${encodeURIComponent(effectiveUserId)}`, {}, 4000);
     if (!res.ok) throw new Error(`History API Error ${res.status}`);
     return await res.json();
   } catch (err) {
-    console.warn('[KisanAI API] getHistory endpoint unreachable, using stored local fallback:', err);
+    console.warn('[KisanAI API] getHistory endpoint unreachable or timed out, using stored local fallback:', err);
     const stored = getStoredUserHistory(effectiveUserId);
     return stored.map((item) => ({
       id: item.id,
@@ -365,7 +385,7 @@ export async function getWeather(locationQuery?: string): Promise<{
   if (!USE_MOCK) {
     try {
       const locParam = locationQuery ? `?location=${encodeURIComponent(locationQuery)}` : '';
-      const res = await fetch(`${API_BASE_URL}/api/weather${locParam}`);
+      const res = await fetchWithTimeout(`${API_BASE_URL}/api/weather${locParam}`, {}, 4000);
       if (res.ok) {
         return await res.json();
       }
