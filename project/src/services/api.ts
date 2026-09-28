@@ -16,7 +16,7 @@ import { fetchWeatherData, searchLocations, DEFAULT_FARM_LOCATION } from '@/serv
 
 // ─── Configuration & Flags ──────────────────────────────────────────
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env as Record<string, string>).API_BASE_URL || 'http://localhost:8000';
 
 const MOCK_DELAY = 1200;
 
