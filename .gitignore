@@ -22,6 +22,7 @@ project/dist/
 # Logs & Environment
 *.log
 .env
+!.env.production
 .env.local
 .DS_Store
 .idea/
