@@ -64,14 +64,14 @@ function formatDate(iso: string): string {
 
 export function ResultsPage() {
   const { t, lang } = useLanguage();
-  const { currentResult, navigate, addToHistory, userId } = useApp();
+  const { currentResult, navigate, startNewDiagnosis, addToHistory, userId } = useApp();
   const [saved, setSaved] = useState(false);
 
   if (!currentResult) {
     return (
       <div className="py-20 text-center">
         <p className="text-neutral-500 mb-4">{t.diagnosis.errorNoInput}</p>
-        <Button onClick={() => navigate('diagnosis')}>{t.nav.startDiagnosis}</Button>
+        <Button onClick={startNewDiagnosis}>{t.nav.startDiagnosis}</Button>
       </div>
     );
   }
@@ -91,7 +91,7 @@ export function ResultsPage() {
         {/* Top bar */}
         <div className="flex items-center justify-between mb-6 animate-fade-in-down">
           <button
-            onClick={() => navigate('diagnosis')}
+            onClick={startNewDiagnosis}
             className="flex items-center gap-1.5 text-sm font-medium text-neutral-600 hover:text-primary-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -357,7 +357,7 @@ export function ResultsPage() {
 
         {/* Bottom actions */}
         <div className="flex flex-col sm:flex-row gap-3 pb-8">
-          <Button size="lg" fullWidth onClick={() => navigate('diagnosis')}>
+          <Button size="lg" fullWidth onClick={startNewDiagnosis}>
             <ArrowLeft className="w-5 h-5" />
             {t.results.newDiagnosis}
           </Button>

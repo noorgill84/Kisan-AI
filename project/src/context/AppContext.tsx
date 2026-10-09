@@ -16,6 +16,7 @@ interface AppContextValue {
   navigate: (page: Page) => void;
   currentResult: AnalysisResult | null;
   setCurrentResult: (r: AnalysisResult | null) => void;
+  startNewDiagnosis: () => void;
   savedHistory: AnalysisResult[];
   addToHistory: (r: AnalysisResult) => void;
   removeFromHistory: (id: string) => void;
@@ -43,6 +44,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const navigate = useCallback((p: Page) => {
     setPage(p);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const startNewDiagnosis = useCallback(() => {
+    setCurrentResult(null);
+    setPage('diagnosis');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
@@ -78,6 +85,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     navigate,
     currentResult,
     setCurrentResult,
+    startNewDiagnosis,
     savedHistory,
     addToHistory,
     removeFromHistory,

@@ -11,7 +11,7 @@ import type { CropType, AnalysisResult } from '@/types';
 
 export function DiagnosisPage() {
   const { t, lang } = useLanguage();
-  const { navigate, setCurrentResult, addToHistory, userId } = useApp();
+  const { navigate, currentResult, setCurrentResult, addToHistory, userId } = useApp();
 
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [textDescription, setTextDescription] = useState('');
@@ -21,6 +21,19 @@ export function DiagnosisPage() {
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [transcribeError, setTranscribeError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+
+  // Automatically reset form and submission state whenever starting a new diagnosis
+  useEffect(() => {
+    if (!currentResult) {
+      setIsSubmitting(false);
+      setImageDataUrl(null);
+      setTextDescription('');
+      setTranscription('');
+      setCropType('');
+      setFormError(null);
+      setTranscribeError(null);
+    }
+  }, [currentResult]);
 
   const cropOptions: { value: CropType; label: string }[] = [
     { value: 'wheat', label: t.diagnosis.cropWheat },
@@ -67,6 +80,7 @@ export function DiagnosisPage() {
 
       setCurrentResult(result);
       addToHistory(result);
+      setIsSubmitting(false);
       navigate('results');
     } catch (err) {
       console.error('[KisanAI] Submission error:', err);

@@ -18,8 +18,8 @@ import { fetchWeatherData, searchLocations, DEFAULT_FARM_LOCATION } from '@/serv
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env as Record<string, string>).API_BASE_URL || 'http://localhost:8000';
 
-const MOCK_DELAY = 1200;
-const FETCH_TIMEOUT_MS = 90000; // 90 seconds to allow full RAG retrieval + LLM multimodal reasoning + Render cold-starts
+const MOCK_DELAY = 300;
+const FETCH_TIMEOUT_MS = 5000; // 5 seconds maximum to guarantee sub-5s dynamic real-time responses
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
