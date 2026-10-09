@@ -522,9 +522,13 @@ def match_kb_diagnoses_from_sources(query: str, crop_type: CropType, sources: Li
     scores: Dict[str, float] = {}
 
     for key, entry in KB_DIAGNOSES.items():
-        score = 0.0
-        # Crop match bonus
         key_crop = key.split("_")[0]
+        # Crop strictness: exclude diagnoses for other specific crops
+        if crop_type and crop_type != "unknown":
+            if key_crop in ["rice", "wheat", "maize", "cotton", "sugarcane", "tomato", "potato"] and key_crop != crop_type:
+                continue
+
+        score = 0.0
         if crop_type and crop_type != "unknown" and crop_type in key_crop:
             score += 15.0
 

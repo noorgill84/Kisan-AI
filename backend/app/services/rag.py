@@ -47,11 +47,21 @@ def retrieve_evidence(query: str, crop_type: str = "unknown", top_k: int = 3) ->
     if chunks and query_tokens:
         scored_chunks = []
         for chunk in chunks:
+            source_file = chunk.get("source", "").lower()
+            # Crop strictness: exclude documents belonging to a different crop
+            if crop_type and crop_type != "unknown":
+                is_mismatch = False
+                for known_crop in ["rice", "wheat", "maize", "cotton", "sugarcane", "tomato", "potato"]:
+                    if known_crop in source_file and known_crop != crop_type:
+                        is_mismatch = True
+                        break
+                if is_mismatch:
+                    continue
+
             term_freq = chunk.get("term_freq", {})
             score = 0.0
             for t in query_tokens:
                 if t in term_freq:
-                    # TF-IDF calculation
                     tf = term_freq[t]
                     term_idf = idf.get(t, 1.0)
                     score += tf * term_idf

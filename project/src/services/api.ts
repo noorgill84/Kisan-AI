@@ -566,15 +566,19 @@ async function mockAnalyzeInput(req: AnalyzeRequest): Promise<AnalysisResult> {
     pa: cropType === 'wheat' ? 'ਕਣਕ' : cropType === 'rice' ? 'ਚੌਲ' : cropType === 'maize' ? 'ਮੱਕੀ' : cropType === 'cotton' ? 'ਕਪਾਹ' : cropType === 'potato' ? 'ਆਲੂ' : cropType === 'tomato' ? 'ਟਮਾਟਰ' : cropType === 'sugarcane' ? 'ਗੰਨਾ' : 'ਅਣਜਾਣ',
   };
 
-  // Perform dynamic RAG matching over CLIENT_KB_REGISTRY
+  // Perform dynamic RAG matching over CLIENT_KB_REGISTRY with strict crop isolation
   const scored = CLIENT_KB_REGISTRY.map((entry) => {
+    // Strict crop filter: if user specified a crop, disqualify entries belonging to OTHER crops!
+    if (cropType !== 'unknown' && entry.crop !== 'any' && entry.crop !== cropType) {
+      return { entry, score: -1 };
+    }
     let score = 0;
-    if (entry.crop === cropType) score += 10;
+    if (entry.crop === cropType) score += 15;
     entry.keywords.forEach((kw) => {
       if (queryText.includes(kw.toLowerCase())) score += 5;
     });
     return { entry, score };
-  });
+  }).filter((item) => item.score >= 0);
 
   scored.sort((a, b) => b.score - a.score);
 
