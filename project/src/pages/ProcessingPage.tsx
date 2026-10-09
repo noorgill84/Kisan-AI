@@ -11,13 +11,13 @@ export function ProcessingPage() {
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
-    timers.push(setTimeout(() => setStage(1), 600));
-    timers.push(setTimeout(() => setStage(2), 1400));
-    timers.push(setTimeout(() => setStage(3), 2200));
+    timers.push(setTimeout(() => setStage(1), 2500));
+    timers.push(setTimeout(() => setStage(2), 7000));
+    timers.push(setTimeout(() => setStage(3), 16000));
     return () => timers.forEach(clearTimeout);
   }, []);
 
-  // Safety fallback: navigate to results as soon as currentResult is ready
+  // Safety fallback: navigate to results as soon as real RAG currentResult is ready
   useEffect(() => {
     if (currentResult) {
       const timer = setTimeout(() => {
@@ -26,12 +26,12 @@ export function ProcessingPage() {
       return () => clearTimeout(timer);
     }
 
-    // If no result after 7 seconds, return gracefully to diagnosis page
+    // Allow up to 90 seconds for real RAG vector search + multimodal LLM analysis + Render cold-starts
     const safetyTimer = setTimeout(() => {
       if (!currentResult) {
         navigate('diagnosis');
       }
-    }, 7000);
+    }, 90000);
     return () => clearTimeout(safetyTimer);
   }, [currentResult, navigate]);
 
