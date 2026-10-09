@@ -14,10 +14,39 @@ MOCK_TRANSCRIPTIONS = {
 
 def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: LanguageCode) -> Tuple[str, float]:
     """
-    Transcribes audio bytes to text using OpenAI Whisper / Groq or fallback.
+    Transcribes audio bytes to text using Gemini, OpenAI Whisper, or Groq.
     Returns (transcription_text, confidence_score).
     """
-    # 1. Try OpenAI Whisper
+    # 1. Try Gemini Audio STT
+    if settings.GEMINI_API_KEY:
+        try:
+            from google import genai
+            client = genai.Client(api_key=settings.GEMINI_API_KEY)
+            mime_type = "audio/webm"
+            if filename:
+                if filename.endswith(".wav"):
+                    mime_type = "audio/wav"
+                elif filename.endswith(".mp3"):
+                    mime_type = "audio/mp3"
+                elif filename.endswith(".m4a"):
+                    mime_type = "audio/m4a"
+
+            prompt_lang = "Hindi" if language == "hi" else ("Punjabi" if language == "pa" else "English")
+            user_prompt = f"Transcribe the verbatim spoken words from this audio clip accurately in {prompt_lang}. Return ONLY the transcript text without preamble."
+
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=[
+                    user_prompt,
+                    genai.types.Part.from_bytes(data=audio_bytes, mime_type=mime_type)
+                ]
+            )
+            if response.text and response.text.strip():
+                return response.text.strip(), 0.96
+        except Exception as e:
+            logger.error(f"Gemini Audio STT failed: {e}")
+
+    # 2. Try OpenAI Whisper
     if settings.OPENAI_API_KEY:
         try:
             import openai
@@ -35,7 +64,7 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
         except Exception as e:
             logger.error(f"OpenAI Whisper STT failed: {e}")
 
-    # 2. Try Groq Whisper
+    # 3. Try Groq Whisper
     if settings.GROQ_API_KEY:
         try:
             import openai
@@ -59,3 +88,4 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
     logger.warning("No STT API available or call failed. Using localized fallback transcription.")
     fallback_text = MOCK_TRANSCRIPTIONS.get(language, MOCK_TRANSCRIPTIONS["en"])
     return fallback_text, 0.88
+

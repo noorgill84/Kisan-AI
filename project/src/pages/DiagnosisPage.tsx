@@ -46,12 +46,18 @@ export function DiagnosisPage() {
     { value: 'unknown', label: t.diagnosis.cropUnknown },
   ];
 
-  async function handleRecorded(blob: Blob) {
+  async function handleRecorded(blob: Blob, liveText?: string) {
+    if (liveText && liveText.trim().length > 0) {
+      setTranscription(liveText.trim());
+      return;
+    }
     setIsTranscribing(true);
     setTranscribeError(null);
     try {
       const result = await transcribeAudio({ audioBlob: blob, language: lang });
-      setTranscription(result.text);
+      if (result && result.text) {
+        setTranscription(result.text);
+      }
     } catch {
       setTranscribeError(t.diagnosis.errorTranscribe);
     } finally {
@@ -129,6 +135,8 @@ export function DiagnosisPage() {
               transcriptionLabel={t.diagnosis.transcriptionLabel}
               transcriptionPlaceholder={t.diagnosis.transcriptionPlaceholder}
               onRecorded={handleRecorded}
+              onTranscriptionChange={setTranscription}
+              language={lang}
               isProcessing={isTranscribing}
               error={transcribeError ?? undefined}
             />
