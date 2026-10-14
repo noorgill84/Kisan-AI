@@ -64,7 +64,21 @@ export function VoiceRecorder({
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
-      const mr = new MediaRecorder(stream);
+      // Detect supported audio mimeType across iOS Safari and Android/Desktop
+      let chosenMime = '';
+      if (typeof MediaRecorder !== 'undefined' && typeof MediaRecorder.isTypeSupported === 'function') {
+        if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+          chosenMime = 'audio/webm;codecs=opus';
+        } else if (MediaRecorder.isTypeSupported('audio/webm')) {
+          chosenMime = 'audio/webm';
+        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+          chosenMime = 'audio/mp4';
+        } else if (MediaRecorder.isTypeSupported('audio/aac')) {
+          chosenMime = 'audio/aac';
+        }
+      }
+
+      const mr = chosenMime ? new MediaRecorder(stream, { mimeType: chosenMime }) : new MediaRecorder(stream);
       mediaRecorderRef.current = mr;
       chunksRef.current = [];
       liveTranscriptRef.current = '';
@@ -75,7 +89,8 @@ export function VoiceRecorder({
       };
 
       mr.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        const actualType = mr.mimeType || chosenMime || 'audio/webm';
+        const blob = new Blob(chunksRef.current, { type: actualType });
         onRecorded(blob, liveTranscriptRef.current || undefined);
         stream.getTracks().forEach((t) => t.stop());
       };

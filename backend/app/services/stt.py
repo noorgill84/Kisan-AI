@@ -23,13 +23,31 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
             from google import genai
             client = genai.Client(api_key=settings.GEMINI_API_KEY)
             mime_type = "audio/webm"
-            if filename:
-                if filename.endswith(".wav"):
+            file_ext = ".webm"
+            # Auto-detect audio container from magic bytes or filename (supports iOS Safari MP4/AAC and Android WebM)
+            if audio_bytes.startswith(b"\x1a\x45\xdf\xa3"):
+                mime_type = "audio/webm"
+                file_ext = ".webm"
+            elif len(audio_bytes) > 8 and (b"ftyp" in audio_bytes[:16] or audio_bytes[:4] == b"\x00\x00\x00\x20"):
+                mime_type = "audio/mp4"
+                file_ext = ".m4a"
+            elif audio_bytes.startswith(b"RIFF"):
+                mime_type = "audio/wav"
+                file_ext = ".wav"
+            elif audio_bytes.startswith(b"ID3") or audio_bytes.startswith(b"\xff\xfb") or audio_bytes.startswith(b"\xff\xf3"):
+                mime_type = "audio/mp3"
+                file_ext = ".mp3"
+            elif filename:
+                fn = filename.lower()
+                if fn.endswith(".mp4") or fn.endswith(".m4a") or fn.endswith(".aac"):
+                    mime_type = "audio/mp4"
+                    file_ext = ".m4a"
+                elif fn.endswith(".wav"):
                     mime_type = "audio/wav"
-                elif filename.endswith(".mp3"):
+                    file_ext = ".wav"
+                elif fn.endswith(".mp3"):
                     mime_type = "audio/mp3"
-                elif filename.endswith(".m4a"):
-                    mime_type = "audio/m4a"
+                    file_ext = ".mp3"
 
             prompt_lang = "Hindi (Devanagari script)" if language == "hi" else ("Punjabi (Gurmukhi script)" if language == "pa" else "English")
             user_prompt = (
@@ -60,10 +78,7 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
             import openai
             client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
             audio_file = io.BytesIO(audio_bytes)
-            ext = ".webm"
-            if filename and "." in filename:
-                ext = "." + filename.split(".")[-1]
-            audio_file.name = f"audio{ext}"
+            audio_file.name = f"audio{file_ext}"
             
             transcript = client.audio.transcriptions.create(
                 model="whisper-1",
@@ -84,10 +99,7 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
                 base_url="https://api.groq.com/openai/v1"
             )
             audio_file = io.BytesIO(audio_bytes)
-            ext = ".webm"
-            if filename and "." in filename:
-                ext = "." + filename.split(".")[-1]
-            audio_file.name = f"audio{ext}"
+            audio_file.name = f"audio{file_ext}"
 
             transcript = client.audio.transcriptions.create(
                 model="whisper-large-v3",

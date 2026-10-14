@@ -949,7 +949,9 @@ export async function transcribeAudio(req: TranscribeRequest): Promise<Transcrib
 
   try {
     const formData = new FormData();
-    formData.append('file', req.audioBlob, 'audio.webm');
+    const isMp4 = req.audioBlob.type.includes('mp4') || req.audioBlob.type.includes('aac');
+    const audioFilename = isMp4 ? 'audio.m4a' : 'audio.webm';
+    formData.append('file', req.audioBlob, audioFilename);
     formData.append('language', req.language);
 
     const res = await fetchWithTimeout(`${API_BASE_URL}/api/transcribe`, {
