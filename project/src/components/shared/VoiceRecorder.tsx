@@ -43,8 +43,11 @@ export function VoiceRecorder({
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
+  const isRecordingRef = useRef<boolean>(false);
+
   useEffect(() => {
     return () => {
+      isRecordingRef.current = false;
       if (timerRef.current) clearInterval(timerRef.current);
       if (recognitionRef.current) {
         try {
@@ -65,6 +68,7 @@ export function VoiceRecorder({
       mediaRecorderRef.current = mr;
       chunksRef.current = [];
       liveTranscriptRef.current = '';
+      isRecordingRef.current = true;
 
       mr.ondataavailable = (e) => {
         if (e.data.size > 0) chunksRef.current.push(e.data);
@@ -87,17 +91,41 @@ export function VoiceRecorder({
           const sr = new SpeechRecognition();
           sr.continuous = true;
           sr.interimResults = true;
-          sr.lang = language === 'hi' ? 'hi-IN' : language === 'pa' ? 'pa-IN' : 'en-IN';
+          // Chromium standard: 'pa-Guru-IN' for Punjabi (Gurmukhi, India), 'hi-IN' for Hindi, 'en-IN' for English
+          const primaryLangTag = language === 'hi' ? 'hi-IN' : language === 'pa' ? 'pa-Guru-IN' : 'en-IN';
+          sr.lang = primaryLangTag;
 
           sr.onresult = (event: any) => {
-            let text = '';
+            let fullText = '';
             for (let i = 0; i < event.results.length; i++) {
-              text += event.results[i][0].transcript + ' ';
+              fullText += event.results[i][0].transcript + ' ';
             }
-            const cleaned = text.trim();
-            liveTranscriptRef.current = cleaned;
-            if (onTranscriptionChange) {
-              onTranscriptionChange(cleaned);
+            const cleaned = fullText.trim();
+            if (cleaned) {
+              liveTranscriptRef.current = cleaned;
+              if (onTranscriptionChange) {
+                onTranscriptionChange(cleaned);
+              }
+            }
+          };
+
+          sr.onerror = (event: any) => {
+            console.warn('[VoiceRecorder] SpeechRecognition error:', event?.error);
+            // If pa-Guru-IN is rejected by the browser, attempt fallback to pa-IN
+            if (event?.error === 'language-not-supported' && sr.lang === 'pa-Guru-IN') {
+              try {
+                sr.lang = 'pa-IN';
+                if (isRecordingRef.current) sr.start();
+              } catch {}
+            }
+          };
+
+          sr.onend = () => {
+            // Re-start recognition if user is still actively recording (handles natural speech pauses)
+            if (isRecordingRef.current) {
+              try {
+                sr.start();
+              } catch {}
             }
           };
 
@@ -118,6 +146,7 @@ export function VoiceRecorder({
   }
 
   function stopRecording() {
+    isRecordingRef.current = false;
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();

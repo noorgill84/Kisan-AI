@@ -7,9 +7,9 @@ from app.models.schemas import LanguageCode
 logger = logging.getLogger(__name__)
 
 MOCK_TRANSCRIPTIONS = {
-    "en": "Yellow spots appeared on the lower leaves about a week ago. They started small but have been spreading upward. The edges of the leaves are turning brown and curling.",
-    "hi": "लगभग एक हफ्ते पहले निचली पत्तियों पर पीले धब्बे दिखे। वे छोटे थे लेकिन ऊपर की ओर फैल रहे हैं। पत्तियों के किनारे भूरे हो रहे हैं और मुड़ रहे हैं।",
-    "pa": "ਲਗਭਗ ਇੱਕ ਹਫ਼ਤਾ ਪਹਿਲਾਂ ਹੇਠਲੇ ਪੱਤਿਆਂ ਤੇ ਪੀਲੇ ਧੱਬੇ ਦਿਸੇ। ਉਹ ਛੋਟੇ ਸਨ ਪਰ ਉੱਪਰ ਵੱਲ ਫੈਲ ਰਹੇ ਹਨ। ਪੱਤਿਆਂ ਦੇ ਕਿਨਾਰੇ ਭੂਰੇ ਹੋ ਰਹੇ ਹਨ ਅਤੇ ਮੁੜ ਰਹੇ ਹਨ।"
+    "en": "The crop leaves are showing spots and marginal damage over recent days. Growth seems affected and needs evaluation.",
+    "hi": "फसल की पत्तियों पर हाल के दिनों में धब्बे और किनारों पर खराबी दिख रही है। विकास प्रभावित लग रहा है।",
+    "pa": "ਫਸਲ ਦੇ ਪੱਤਿਆਂ ਤੇ ਪਿਛਲੇ ਕੁਝ ਦਿਨਾਂ ਤੋਂ ਧੱਬੇ ਅਤੇ ਕਿਨਾਰਿਆਂ ਤੇ ਨੁਕਸਾਨ ਦਿਸ ਰਿਹਾ ਹੈ। ਵਾਧਾ ਪ੍ਰਭਾਵਿਤ ਲੱਗ ਰਿਹਾ ਹੈ।"
 }
 
 def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: LanguageCode) -> Tuple[str, float]:
@@ -31,18 +31,26 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
                 elif filename.endswith(".m4a"):
                     mime_type = "audio/m4a"
 
-            prompt_lang = "Hindi" if language == "hi" else ("Punjabi" if language == "pa" else "English")
-            user_prompt = f"Transcribe the verbatim spoken words from this audio clip accurately in {prompt_lang}. Return ONLY the transcript text without preamble."
-
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=[
-                    user_prompt,
-                    genai.types.Part.from_bytes(data=audio_bytes, mime_type=mime_type)
-                ]
+            prompt_lang = "Hindi (Devanagari script)" if language == "hi" else ("Punjabi (Gurmukhi script)" if language == "pa" else "English")
+            user_prompt = (
+                f"Transcribe the verbatim spoken words from this agricultural voice note accurately in {prompt_lang}. "
+                f"Return ONLY the exact spoken transcription text without translation, commentary, quotes, or preamble."
             )
-            if response.text and response.text.strip():
-                return response.text.strip(), 0.96
+
+            # Support valid Gemini production models (gemini-2.0-flash and gemini-1.5-flash)
+            for model_name in ["gemini-2.0-flash", "gemini-1.5-flash"]:
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=[
+                            user_prompt,
+                            genai.types.Part.from_bytes(data=audio_bytes, mime_type=mime_type)
+                        ]
+                    )
+                    if response.text and response.text.strip():
+                        return response.text.strip(), 0.96
+                except Exception as inner_e:
+                    logger.warning(f"Gemini Audio STT with {model_name} failed: {inner_e}")
         except Exception as e:
             logger.error(f"Gemini Audio STT failed: {e}")
 
@@ -52,7 +60,10 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
             import openai
             client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
             audio_file = io.BytesIO(audio_bytes)
-            audio_file.name = filename or "audio.wav"
+            ext = ".webm"
+            if filename and "." in filename:
+                ext = "." + filename.split(".")[-1]
+            audio_file.name = f"audio{ext}"
             
             transcript = client.audio.transcriptions.create(
                 model="whisper-1",
@@ -73,7 +84,10 @@ def transcribe_audio_bytes(audio_bytes: bytes, filename: str, language: Language
                 base_url="https://api.groq.com/openai/v1"
             )
             audio_file = io.BytesIO(audio_bytes)
-            audio_file.name = filename or "audio.wav"
+            ext = ".webm"
+            if filename and "." in filename:
+                ext = "." + filename.split(".")[-1]
+            audio_file.name = f"audio{ext}"
 
             transcript = client.audio.transcriptions.create(
                 model="whisper-large-v3",

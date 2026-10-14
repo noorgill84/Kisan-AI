@@ -1,6 +1,7 @@
 import logging
 import base64
 import json
+import re
 from typing import Optional, Dict, Any
 from app.config import settings
 
@@ -103,17 +104,21 @@ def analyze_multimodal_crop_input(
                     )
                 )
 
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=contents,
-                config=genai.types.GenerateContentConfig(
-                    response_mime_type="application/json"
-                )
-            )
-            if response.text:
-                parsed = parse_json_from_llm_text(response.text)
-                if parsed:
-                    return parsed
+            for model_name in ["gemini-2.0-flash", "gemini-1.5-flash"]:
+                try:
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=contents,
+                        config=genai.types.GenerateContentConfig(
+                            response_mime_type="application/json"
+                        )
+                    )
+                    if response.text:
+                        parsed = parse_json_from_llm_text(response.text)
+                        if parsed:
+                            return parsed
+                except Exception as inner_e:
+                    logger.warning(f"Gemini Vision with {model_name} failed: {inner_e}")
         except Exception as e:
             logger.error(f"Gemini API analysis failed: {e}")
 

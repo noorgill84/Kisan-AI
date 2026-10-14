@@ -78,7 +78,7 @@ const CLIENT_KB_REGISTRY: ClientDiagnoses[] = [
   {
     id: 'maize-faw',
     crop: 'maize',
-    keywords: ['armyworm', 'whorl', 'frass', 'sawdust', 'hole', 'caterpillar', 'maize', 'corn'],
+    keywords: ['armyworm', 'whorl', 'frass', 'sawdust', 'hole', 'caterpillar', 'maize', 'corn', 'मक्का', 'फॉल आर्मीवर्म', 'लट', 'कीड़ा', 'ਸੁੰਡੀ', 'ਮੱਕੀ', 'ਫਾਲ ਆਰਮੀਵਰਮ'],
     cause: {
       id: 'cause-maize-faw',
       name: 'Fall Armyworm (Spodoptera frugiperda)',
@@ -157,7 +157,7 @@ const CLIENT_KB_REGISTRY: ClientDiagnoses[] = [
   {
     id: 'wheat-yellow-rust',
     crop: 'wheat',
-    keywords: ['rust', 'stripe rust', 'yellow rust', 'wheat', 'pustule', "powder", 'puccinia'],
+    keywords: ['rust', 'stripe rust', 'yellow rust', 'wheat', 'pustule', 'powder', 'puccinia', 'गेहूं', 'पीला रतुआ', 'रतुआ', 'हल्दी रोग', 'ਕਣਕ', 'ਪੀਲਾ ਰਤੂਆ', 'ਰਤੂਆ', 'ਹਲਦੀ'],
     cause: {
       id: 'cause-wheat-rust',
       name: 'Yellow Rust / Stripe Rust (Puccinia striiformis)',
@@ -236,7 +236,7 @@ const CLIENT_KB_REGISTRY: ClientDiagnoses[] = [
   {
     id: 'cotton-whitefly',
     crop: 'cotton',
-    keywords: ['cotton', 'whitefly', 'curl', 'bemisia', 'sticky', 'honeydew', 'sooty'],
+    keywords: ['cotton', 'whitefly', 'curl', 'bemisia', 'sticky', 'honeydew', 'sooty', 'कपास', 'सफेद मक्खी', 'लीफ कर्ल', 'मरोड़िया', 'ਕਪਾਹ', 'ਚਿੱਟੀ ਮੱਖੀ', 'ਮਰੋੜੀਆ'],
     cause: {
       id: 'cause-cotton-wf',
       name: 'Cotton Whitefly & Leaf Curl Virus (Bemisia tabaci)',
@@ -315,7 +315,7 @@ const CLIENT_KB_REGISTRY: ClientDiagnoses[] = [
   {
     id: 'potato-soft-rot',
     crop: 'potato',
-    keywords: ['potato', 'soft rot', 'rotten', 'foul', 'slimy', 'tuber', 'blackleg'],
+    keywords: ['potato', 'soft rot', 'rotten', 'foul', 'slimy', 'tuber', 'blackleg', 'आलू', 'सॉफ्ट रॉट', 'सड़न', 'दुर्गंध', 'ਆਲੂ', 'ਸਾਫ਼ਟ ਰੋਟ', 'ਸੜਨ'],
     cause: {
       id: 'cause-potato-rot',
       name: 'Potato Soft Rot (Pectobacterium carotovorum)',
@@ -394,7 +394,7 @@ const CLIENT_KB_REGISTRY: ClientDiagnoses[] = [
   {
     id: 'rice-blb',
     crop: 'rice',
-    keywords: ['rice', 'bacterial', 'blight', 'paddy', 'xanthomonas', 'lesion'],
+    keywords: ['rice', 'bacterial', 'blight', 'paddy', 'xanthomonas', 'lesion', 'चावल', 'धान', 'जीवाणु', 'पत्ती ब्लाइट', 'ਝੋਨਾ', 'ਚੌਲ', 'ਬੈਕਟੀਰੀਆ', 'ਪੱਤਾ ਬਲਾਈਟ'],
     cause: {
       id: 'cause-rice-blb',
       name: 'Bacterial Leaf Blight (Xanthomonas oryzae)',
@@ -473,7 +473,7 @@ const CLIENT_KB_REGISTRY: ClientDiagnoses[] = [
   {
     id: 'nitrogen-deficiency',
     crop: 'any',
-    keywords: ['nitrogen', 'deficiency', 'yellowing', 'pale', 'stunted', 'chlorosis', 'bottom leaves'],
+    keywords: ['nitrogen', 'deficiency', 'yellowing', 'pale', 'stunted', 'chlorosis', 'bottom leaves', 'नाइट्रोजन', 'यूरिया', 'कमी', 'पीलापन', 'ਨਾਈਟ੍ਰੋਜਨ', 'ਯੂਰੀਆ', 'ਘਾਟ', 'ਪੀਲਾਪਨ'],
     cause: {
       id: 'cause-n-def',
       name: 'Nitrogen Deficiency',
@@ -549,6 +549,243 @@ const CLIENT_KB_REGISTRY: ClientDiagnoses[] = [
       },
     ],
   },
+  {
+    id: 'sugarcane-red-rot',
+    crop: 'sugarcane',
+    keywords: ['sugarcane', 'red rot', 'colletotrichum', 'stalk', 'alcoholic', 'reddening', 'wither', 'गन्ना', 'लाल सड़न', 'रेड रॉट', 'ਗੰਨਾ', 'ਲਾਲ ਸੜਨ'],
+    cause: {
+      id: 'cause-sugarcane-rr',
+      name: 'Sugarcane Red Rot (Colletotrichum falcatum)',
+      nameLocalized: {
+        en: 'Sugarcane Red Rot (Colletotrichum falcatum)',
+        hi: 'गन्ने का लाल सड़न रोग (रेड रॉट)',
+        pa: 'ਗੰਨੇ ਦਾ ਲਾਲ ਸੜਨ ਰੋਗ (ਰੇਡ ਰੋਟ)',
+      },
+      category: 'disease',
+      description: 'Red rot causes internal stalk tissues to turn red with crosswise white patches and distinct alcoholic odor upon splitting.',
+      descriptionLocalized: {
+        en: 'Red rot causes internal stalk tissues to turn red with crosswise white patches and distinct alcoholic odor upon splitting.',
+        hi: 'लाल सड़न रोग से तने का आंतरिक ऊतक लाल हो जाता है, जिस पर सफेद चकत्ते और चीरने पर शराबी गंध आती है।',
+        pa: 'ਲਾਲ ਸੜਨ ਰੋਗ ਨਾਲ ਤਣੇ ਦਾ ਅੰਦਰੂਨੀ ਹਿੱਸਾ ਲਾਲ ਹੋ ਜਾਂਦਾ ਹੈ ਜਿਸ ਵਿੱਚ ਚਿੱਟੇ ਧੱਬੇ ਅਤੇ ਸ਼ਰਾਬ ਵਰਗੀ ਬੂ ਆਉਂਦੀ ਹੈ।',
+      },
+      likelihood: 'high',
+      symptoms: [
+        'Yellowing and drooping of third and fourth leaves',
+        'Stalk splitting reveals red vascular tissues with white transverse spots',
+        'Sour alcoholic odor emitted from affected stalks',
+      ],
+      symptomsLocalized: {
+        en: [
+          'Yellowing and drooping of third and fourth leaves',
+          'Stalk splitting reveals red vascular tissues with white transverse spots',
+          'Sour alcoholic odor emitted from affected stalks',
+        ],
+        hi: [
+          'तीसरी और चौथी पत्तियों का पीला पड़ना और झुकना',
+          'तने को फाड़ने पर लाल ऊतक और सफेद चकत्ते दिखना',
+          'खट्टी शराबी गंध निकलना',
+        ],
+        pa: [
+          'ਤੀਜੀ ਅਤੇ ਚੌਥੀ ਪੱਤੀ ਦਾ ਪੀਲਾ ਪੈਣਾ',
+          'ਤਣਾ ਪਾੜਨ ਤੇ ਲਾਲ ਹਿੱਸਾ ਅਤੇ ਚਿੱਟੇ ਧੱਬੇ ਦਿਸਣਾ',
+          'ਖੱਟੀ ਸ਼ਰਾਬ ਵਰਗੀ ਬੂ ਨਿਕਲਣਾ',
+        ],
+      },
+    },
+    sources: [
+      {
+        id: 'src-rr-1',
+        title: 'ICAR-SBI Sugarcane Disease Identification Guide',
+        source: 'ICAR-Sugarcane Breeding Institute',
+        url: 'https://sugarcane.icar.gov.in',
+        snippet: 'Red rot causes reddened internal stalk with transverse white patches and alcoholic odor. Rogue out infected clumps.',
+        relevance: 'high',
+      },
+    ],
+    actions: [
+      {
+        id: 'act-rr-1',
+        step: 1,
+        title: 'Uproot and burn diseased sugarcane clumps immediately',
+        titleLocalized: {
+          en: 'Uproot and burn diseased sugarcane clumps immediately',
+          hi: 'प्रभावित गन्ने के पौधों को उखाड़कर जलाएं',
+          pa: 'ਪ੍ਰਭਾਵਿਤ ਗੰਨੇ ਦੇ ਬੂਟਿਆਂ ਨੂੰ ਪੁੱਟ ਕੇ ਸਾੜੋ',
+        },
+        description: 'Rogue out diseased clumps including root stools to prevent fungal spread to neighboring rows.',
+        descriptionLocalized: {
+          en: 'Rogue out diseased clumps including root stools to prevent fungal spread to neighboring rows.',
+          hi: 'संक्रमण रोकने के लिए जड़ों सहित रोगी पौधों को उखाड़कर तुरंत नष्ट करें।',
+          pa: 'ਛੂਤ ਰੋਕਣ ਲਈ ਜੜ੍ਹਾਂ ਸਮੇਤ ਰੋਗੀ ਬੂਟਿਆਂ ਨੂੰ ਪੁੱਟ ਕੇ ਤੁਰੰਤ ਨਸ਼ਟ ਕਰੋ।',
+        },
+        priority: 'immediate',
+        timeframe: 'Within 24–48 hours',
+        timeframeLocalized: {
+          en: 'Within 24–48 hours',
+          hi: '24–48 घंटे के भीतर',
+          pa: '24–48 ਘੰਟੇ ਦੇ ਅੰਦਰ',
+        },
+      },
+    ],
+  },
+  {
+    id: 'tomato-late-blight',
+    crop: 'tomato',
+    keywords: ['tomato', 'late blight', 'phytophthora', 'water-soaked', 'white mold', 'fruit rot', 'टमाटर', 'पछेती झुलसा', 'ब्लाइट', 'ਟਮਾਟਰ', 'ਪਛੇਤਾ ਝੁਲਸ'],
+    cause: {
+      id: 'cause-tomato-lb',
+      name: 'Tomato Late Blight (Phytophthora infestans)',
+      nameLocalized: {
+        en: 'Tomato Late Blight (Phytophthora infestans)',
+        hi: 'टमाटर का पछेती झुलसा (लेट ब्लाइट)',
+        pa: 'ਟਮਾਟਰ ਦਾ ਪਛੇਤੀ ਝੁਲਸ (ਲੇਟ ਬਲਾਈਟ)',
+      },
+      category: 'disease',
+      description: 'Late blight spreads rapidly in cool moist weather, creating large dark water-soaked leaf lesions with white fungal fuzz on undersides.',
+      descriptionLocalized: {
+        en: 'Late blight spreads rapidly in cool moist weather, creating large dark water-soaked leaf lesions with white fungal fuzz on undersides.',
+        hi: 'पछेती झुलसा ठंडे और नम मौसम में तेजी से फैलता है, जिससे पत्तियों पर काले जल-भिग्न घाव और नीचे सफेद फफूंद जमती है।',
+        pa: 'ਪਛੇਤੀ ਝੁਲਸ ਠੰਡੇ ਅਤੇ ਨਮ ਮੌਸਮ ਵਿੱਚ ਤੇਜ਼ੀ ਨਾਲ ਫੈਲਦਾ ਹੈ, ਜਿਸ ਨਾਲ ਪੱਤਿਆਂ ਤੇ ਕਾਲੇ ਜ਼ਖ਼ਮ ਅਤੇ ਹੇਠਾਂ ਚਿੱਟੀ ਫਫੂਂਦੀ ਜਮ੍ਹਾਂ ਹੁੰਦੀ ਹੈ।',
+      },
+      likelihood: 'high',
+      symptoms: [
+        'Large irregular dark water-soaked lesions on foliage and stems',
+        'White cottony fungal growth on underside of leaves in morning dew',
+        'Firm brown greasy decay on green and ripening fruits',
+      ],
+      symptomsLocalized: {
+        en: [
+          'Large irregular dark water-soaked lesions on foliage and stems',
+          'White cottony fungal growth on underside of leaves in morning dew',
+          'Firm brown greasy decay on green and ripening fruits',
+        ],
+        hi: [
+          'पत्तियों और तनों पर बड़े काले जल-भिग्न घाव',
+          'सुबह की ओस में पत्तियों के नीचे सफेद सूती फफूंद',
+          'फल पर सख्त भूरा सड़न',
+        ],
+        pa: [
+          'ਪੱਤਿਆਂ ਅਤੇ ਤਣਿਆਂ ਤੇ ਵੱਡੇ ਕਾਲੇ ਜ਼ਖ਼ਮ',
+          'ਸਵੇਰ ਦੀ ਓਸ ਵਿੱਚ ਪੱਤਿਆਂ ਹੇਠ ਚਿੱਟੀ ਫਫੂਂਦੀ',
+          'ਫਲ ਤੇ ਭੂਰਾ ਸੜਨ',
+        ],
+      },
+    },
+    sources: [
+      {
+        id: 'src-tlb-1',
+        title: 'ICAR-IIHR Tomato Disease Management Advisory',
+        source: 'ICAR-Indian Institute of Horticultural Research',
+        url: 'https://iihr.icar.gov.in',
+        snippet: 'Late blight causes rapid water-soaked blighting on leaves and fruits under high humidity. Apply systemic fungicides promptly.',
+        relevance: 'high',
+      },
+    ],
+    actions: [
+      {
+        id: 'act-tlb-1',
+        step: 1,
+        title: 'Spray Cymoxanil + Mancozeb bio-fungicide',
+        titleLocalized: {
+          en: 'Spray Cymoxanil + Mancozeb bio-fungicide',
+          hi: 'साइमोक्सानिल + मैंकोज़ेब का छिड़काव करें',
+          pa: 'ਸਾਈਮੋਕਸਾਨਿਲ + ਮੈਂਕੋਜ਼ੇਬ ਦਾ ਸਪ੍ਰੇਅ ਕਰੋ',
+        },
+        description: 'Apply Cymoxanil + Mancozeb (2 g/L) or Metalaxyl + Mancozeb thoroughly covering foliage.',
+        descriptionLocalized: {
+          en: 'Apply Cymoxanil + Mancozeb (2 g/L) or Metalaxyl + Mancozeb thoroughly covering foliage.',
+          hi: 'पत्तियों पर साइमोक्सानिल + मैंकोज़ेब (2 ग्राम/लीटर) का अच्छी तरह छिड़काव करें।',
+          pa: 'ਪੱਤਿਆਂ ਤੇ ਸਾਈਮੋਕਸਾਨਿਲ + ਮੈਂਕੋਜ਼ੇਬ ਦਾ ਚੰਗੀ ਤਰ੍ਹਾਂ ਸਪ੍ਰੇਅ ਕਰੋ।',
+        },
+        priority: 'immediate',
+        timeframe: 'Within 24–48 hours',
+        timeframeLocalized: {
+          en: 'Within 24–48 hours',
+          hi: '24–48 घंटे के भीतर',
+          pa: '24–48 ਘੰਟੇ ਦੇ ਅੰਦਰ',
+        },
+      },
+    ],
+  },
+  {
+    id: 'zinc-deficiency',
+    crop: 'any',
+    keywords: ['zinc', 'khaira', 'white bud', 'deficiency', 'rusty', 'bronzing', 'internode', 'जिंक', 'खैरा', 'कमी', 'ਜਿੰਕ', 'ਖ਼ੈਰਾ', 'ਘਾਟ'],
+    cause: {
+      id: 'cause-zinc-def',
+      name: 'Zinc Deficiency (Khaira Disease / Bronzing)',
+      nameLocalized: {
+        en: 'Zinc Deficiency (Khaira Disease / Bronzing)',
+        hi: 'जिंक की कमी (खैरा रोग / ब्रोंज़िंग)',
+        pa: 'ਜਿੰਕ ਦੀ ਘਾਟ (ਖ਼ੈਰਾ ਰੋਗ / ਬ੍ਰੋਂਜ਼ਿੰਗ)',
+      },
+      category: 'nutrient',
+      description: 'Zinc deficiency causes rusty brown spots on middle leaves and shortened internodes with stunted bushy growth.',
+      descriptionLocalized: {
+        en: 'Zinc deficiency causes rusty brown spots on middle leaves and shortened internodes with stunted bushy growth.',
+        hi: 'जिंक की कमी से बीच की पत्तियों पर जंग जैसे भूरे धब्बे और छोटी गांठों के साथ रुका हुआ विकास होता है।',
+        pa: 'ਜਿੰਕ ਦੀ ਘਾਟ ਨਾਲ ਵਿਚਕਾਰਲੇ ਪੱਤਿਆਂ ਤੇ ਜੰਗ ਵਰਗੇ ਭੂਰੇ ਧੱਬੇ ਅਤੇ ਰੁਕਿਆ ਵਾਧਾ ਹੁੰਦਾ ਹੈ।',
+      },
+      likelihood: 'medium',
+      symptoms: [
+        'Rusty brown or reddish-brown pigment spots coalescing on leaves',
+        'Shortened internodes resulting in reset bushy plant architecture',
+        'Chlorotic midrib bleaching on young leaves',
+      ],
+      symptomsLocalized: {
+        en: [
+          'Rusty brown or reddish-brown pigment spots coalescing on leaves',
+          'Shortened internodes resulting in reset bushy plant architecture',
+          'Chlorotic midrib bleaching on young leaves',
+        ],
+        hi: [
+          'पत्तियों पर जंग जैसे भूरे धब्बे',
+          'छोटी गांठें और झाड़ीदार विकास',
+          'नई पत्तियों का सफेद पड़ना',
+        ],
+        pa: [
+          'ਪੱਤਿਆਂ ਤੇ ਜੰਗ ਵਰਗੇ ਭੂਰੇ ਧੱਬੇ',
+          'ਛੋਟੀਆਂ ਗੰਢਾਂ ਅਤੇ ਝਾੜੀਦਾਰ ਵਾਧਾ',
+          'ਨਵੇਂ ਪੱਤਿਆਂ ਦਾ ਚਿੱਟਾ ਪੈਣਾ',
+        ],
+      },
+    },
+    sources: [
+      {
+        id: 'src-zn-1',
+        title: 'FAO Guide on Soil Micronutrient Deficiencies',
+        source: 'FAO Soil Bulletin',
+        url: 'https://www.fao.org',
+        snippet: 'Zinc deficiency produces bronzing and rusty lesions in submerged or alkaline soils. Zinc sulphate foliar spray corrects symptoms.',
+        relevance: 'medium',
+      },
+    ],
+    actions: [
+      {
+        id: 'act-zn-1',
+        step: 2,
+        title: 'Foliar spray of Zinc Sulphate (0.5%) + Lime',
+        titleLocalized: {
+          en: 'Foliar spray of Zinc Sulphate (0.5%) + Lime',
+          hi: 'जिंक सल्फेट (0.5%) + चूने का छिड़काव करें',
+          pa: 'ਜਿੰਕ ਸਲਫ਼ੇਟ (0.5%) + ਚੂਨੇ ਦਾ ਸਪ੍ਰੇਅ ਕਰੋ',
+        },
+        description: 'Spray Zinc Sulphate 21% (5 g/L) mixed with 2.5 g/L lime or Chelated Zinc EDTA.',
+        descriptionLocalized: {
+          en: 'Spray Zinc Sulphate 21% (5 g/L) mixed with 2.5 g/L lime or Chelated Zinc EDTA.',
+          hi: 'जिंक सल्फेट (5 ग्राम/लीटर) और चूने का घोल बनाकर पत्तियों पर छिड़काव करें।',
+          pa: 'ਜਿੰਕ ਸਲਫ਼ੇਟ (5 ਗ੍ਰਾਮ/ਲੀਟਰ) ਅਤੇ ਚੂਨੇ ਦਾ ਸਪ੍ਰੇਅ ਕਰੋ।',
+        },
+        priority: 'short-term',
+        timeframe: 'Within 3–5 days',
+        timeframeLocalized: {
+          en: 'Within 3–5 days',
+          hi: '3–5 दिन के भीतर',
+          pa: '3–5 ਦਿਨਾਂ ਦੇ ਅੰਦਰ',
+        },
+      },
+    ],
+  },
 ];
 
 async function mockAnalyzeInput(req: AnalyzeRequest): Promise<AnalysisResult> {
@@ -570,14 +807,25 @@ async function mockAnalyzeInput(req: AnalyzeRequest): Promise<AnalysisResult> {
   const scored = CLIENT_KB_REGISTRY.map((entry) => {
     // Strict crop filter: if user specified a crop, disqualify entries belonging to OTHER crops!
     if (cropType !== 'unknown' && entry.crop !== 'any' && entry.crop !== cropType) {
-      return { entry, score: -1 };
+      return { entry, score: -1, queryKwMatches: 0 };
     }
     let score = 0;
-    if (entry.crop === cropType) score += 15;
+    if (entry.crop === cropType) score += 20;
+
+    let queryKwMatches = 0;
     entry.keywords.forEach((kw) => {
-      if (queryText.includes(kw.toLowerCase())) score += 5;
+      if (queryText.includes(kw.toLowerCase())) {
+        score += 8;
+        queryKwMatches++;
+      }
     });
-    return { entry, score };
+
+    // Nutrient deficiencies (crop: 'any') must NOT score unless user query explicitly mentioned nutrient deficiency symptoms
+    if (entry.crop === 'any' && queryKwMatches === 0) {
+      score = 0;
+    }
+
+    return { entry, score, queryKwMatches };
   }).filter((item) => item.score >= 0);
 
   scored.sort((a, b) => b.score - a.score);
@@ -586,13 +834,22 @@ async function mockAnalyzeInput(req: AnalyzeRequest): Promise<AnalysisResult> {
   const matchedSources: EvidenceSource[] = [];
   const matchedActions: ActionStep[] = [];
 
-  const primary = scored[0].entry;
+  // Prioritize positive matched entries; if none scored > 0, prefer crop-matching entry rather than arbitrary nutrient deficiency
+  const positive = scored.filter((s) => s.score > 0);
+  const primaryItem = positive.length > 0
+    ? positive[0]
+    : (scored.find((s) => s.entry.crop === cropType) || scored[0]);
+  const primary = primaryItem.entry;
+
   matchedCauses.push({ ...primary.cause, likelihood: 'high' });
   matchedSources.push(...primary.sources);
   matchedActions.push(...primary.actions);
 
-  const secondary = scored.find((s) => s.entry.id !== primary.id && s.entry.cause.name !== primary.cause.name)?.entry;
-  if (secondary) {
+  const secondaryItem = scored.find(
+    (s) => s.entry.id !== primary.id && s.entry.cause.name !== primary.cause.name && (s.score > 0 || (cropType !== 'unknown' && s.entry.crop === cropType))
+  );
+  if (secondaryItem) {
+    const secondary = secondaryItem.entry;
     matchedCauses.push({ ...secondary.cause, likelihood: 'medium' });
     matchedSources.push(...secondary.sources);
     if (secondary.actions.length > 0) {
@@ -635,13 +892,12 @@ async function mockAnalyzeInput(req: AnalyzeRequest): Promise<AnalysisResult> {
   };
 }
 
-
 async function mockTranscribeAudio(req: TranscribeRequest): Promise<TranscribeResponse> {
   await delay(MOCK_DELAY);
   const mockTranscriptions: Record<LanguageCode, string> = {
-    en: 'Yellow spots appeared on the lower leaves about a week ago. They started small but have been spreading upward.',
-    hi: 'लगभग एक हफ्ते पहले निचली पत्तियों पर पीले धब्बे दिखे। वे छोटे थे लेकिन ऊपर की ओर फैल रहे हैं।',
-    pa: 'ਲਗਭਗ ਇੱਕ ਹਫ਼ਤਾ ਪਹਿਲਾਂ ਹੇਠਲੇ ਪੱਤਿਆਂ ਤੇ ਪੀਲੇ ਧੱਬੇ ਦਿਸੇ। ਉਹ ਛੋਟੇ ਸਨ ਪਰ ਉੱਪਰ ਵੱਲ ਫੈਲ ਰਹੇ ਹਨ।',
+    en: 'The crop leaves are showing spots and marginal damage over recent days. Growth seems affected and needs evaluation.',
+    hi: 'फसल की पत्तियों पर हाल के दिनों में धब्बे और किनारों पर खराबी दिख रही है। विकास प्रभावित लग रहा है।',
+    pa: 'ਫਸਲ ਦੇ ਪੱਤਿਆਂ ਤੇ ਪਿਛਲੇ ਕੁਝ ਦਿਨਾਂ ਤੋਂ ਧੱਬੇ ਅਤੇ ਕਿਨਾਰਿਆਂ ਤੇ ਨੁਕਸਾਨ ਦਿਸ ਰਿਹਾ ਹੈ। ਵਾਧਾ ਪ੍ਰਭਾਵਿਤ ਲੱਗ ਰਿਹਾ ਹੈ।',
   };
 
   return {

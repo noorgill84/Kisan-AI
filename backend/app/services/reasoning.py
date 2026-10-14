@@ -74,7 +74,7 @@ def build_escalation_guidance(escalate: bool) -> Tuple[Optional[str], Optional[D
 KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     "rice_bacterial_leaf_blight": {
         "id": "kb-rice-blb",
-        "keywords": ["rice", "bacterial", "blight", "paddy", "xanthomonas", "lesion", "wavy", "water-soaked"],
+        "keywords": ["rice", "bacterial", "blight", "paddy", "xanthomonas", "lesion", "wavy", "water-soaked", "चावल", "धान", "जीवाणु", "पत्ती ब्लाइट", "ਝੋਨਾ", "ਚੌਲ", "ਬੈਕਟੀਰੀਆ", "ਪੱਤਾ ਬਲਾਈਟ"],
         "cause": PossibleCause(
             id="cause-rice-blb",
             name="Bacterial Leaf Blight (Xanthomonas oryzae)",
@@ -125,7 +125,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "rice_blast": {
         "id": "kb-rice-blast",
-        "keywords": ["blast", "spindle", "diamond", "pyricularia", "magnaporthe", "neck blast", "whiteheads"],
+        "keywords": ["blast", "spindle", "diamond", "pyricularia", "magnaporthe", "neck blast", "whiteheads", "ब्लास्ट", "झुलसा", "गर्दन तोड़", "ਬਲਾਸਟ", "ਗਰਦਨ ਮਰੋੜ"],
         "cause": PossibleCause(
             id="cause-rice-blast",
             name="Rice Blast Disease (Magnaporthe oryzae)",
@@ -167,7 +167,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "maize_fall_armyworm": {
         "id": "kb-maize-faw",
-        "keywords": ["armyworm", "maize", "corn", "whorl", "frass", "sawdust", "holes", "caterpillar", "spodoptera"],
+        "keywords": ["armyworm", "maize", "corn", "whorl", "frass", "sawdust", "holes", "caterpillar", "spodoptera", "मक्का", "फॉल आर्मीवर्म", "लट", "कीड़ा", "ਸੁੰਡੀ", "ਮੱਕੀ", "ਫਾਲ ਆਰਮੀਵਰਮ"],
         "cause": PossibleCause(
             id="cause-maize-faw",
             name="Fall Armyworm (Spodoptera frugiperda)",
@@ -218,7 +218,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "wheat_yellow_rust": {
         "id": "kb-wheat-rust",
-        "keywords": ["rust", "yellow rust", "stripe rust", "wheat", "puccinia", "pustule", "powder", "stripes"],
+        "keywords": ["rust", "yellow rust", "stripe rust", "wheat", "puccinia", "pustule", "powder", "stripes", "गेहूं", "पीला रतुआ", "रतुआ", "हल्दी रोग", "ਕਣਕ", "ਪੀਲਾ ਰਤੂਆ", "ਰਤੂਆ", "ਹਲਦੀ"],
         "cause": PossibleCause(
             id="cause-wheat-rust",
             name="Yellow Rust / Stripe Rust (Puccinia striiformis)",
@@ -260,7 +260,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "cotton_whitefly": {
         "id": "kb-cotton-whitefly",
-        "keywords": ["cotton", "whitefly", "bemisia", "leaf curl", "virus", "sticky", "honeydew", "sooty mold"],
+        "keywords": ["cotton", "whitefly", "bemisia", "leaf curl", "virus", "sticky", "honeydew", "sooty mold", "कपास", "सफेद मक्खी", "लीफ कर्ल", "मरोड़िया", "ਕਪਾਹ", "ਚਿੱਟੀ ਮੱਖੀ", "ਮਰੋੜੀਆ"],
         "cause": PossibleCause(
             id="cause-cotton-whitefly",
             name="Cotton Whitefly & Leaf Curl Virus (Bemisia tabaci)",
@@ -302,7 +302,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "sugarcane_red_rot": {
         "id": "kb-sugarcane-redrot",
-        "keywords": ["sugarcane", "red rot", "colletotrichum", "stalk", "alcoholic", "reddening", "wither"],
+        "keywords": ["sugarcane", "red rot", "colletotrichum", "stalk", "alcoholic", "reddening", "wither", "गन्ना", "लाल सड़न", "रेड रॉट", "ਗੰਨਾ", "ਲਾਲ ਸੜਨ"],
         "cause": PossibleCause(
             id="cause-sugarcane-redrot",
             name="Sugarcane Red Rot (Colletotrichum falcatum)",
@@ -344,7 +344,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "tomato_late_blight": {
         "id": "kb-tomato-lateblight",
-        "keywords": ["tomato", "late blight", "phytophthora", "water-soaked", "white mold", "fruit rot"],
+        "keywords": ["tomato", "late blight", "phytophthora", "water-soaked", "white mold", "fruit rot", "टमाटर", "पछेती झुलसा", "ब्लाइट", "ਟਮਾਟਰ", "ਪਛੇਤਾ ਝੁਲਸ"],
         "cause": PossibleCause(
             id="cause-tomato-lateblight",
             name="Tomato Late Blight (Phytophthora infestans)",
@@ -386,7 +386,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "potato_soft_rot": {
         "id": "kb-potato-softrot",
-        "keywords": ["potato", "soft rot", "pectobacterium", "erwinia", "foul", "mushy", "tuber"],
+        "keywords": ["potato", "soft rot", "pectobacterium", "erwinia", "foul", "mushy", "tuber", "आलू", "सॉफ्ट रॉट", "सड़न", "दुर्गंध", "ਆਲੂ", "ਸਾਫ਼ਟ ਰੋਟ", "ਸੜਨ"],
         "cause": PossibleCause(
             id="cause-potato-softrot",
             name="Potato Soft Rot (Pectobacterium carotovorum)",
@@ -428,7 +428,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "nitrogen_deficiency": {
         "id": "kb-nitrogen-def",
-        "keywords": ["nitrogen", "deficiency", "yellowing", "pale", "stunted", "chlorosis", "older leaves"],
+        "keywords": ["nitrogen", "deficiency", "yellowing", "pale", "stunted", "chlorosis", "older leaves", "नाइट्रोजन", "यूरिया", "कमी", "पीलापन", "ਨਾਈਟ੍ਰੋਜਨ", "ਯੂਰੀਆ", "ਘਾਟ", "ਪੀਲਾਪਨ"],
         "cause": PossibleCause(
             id="cause-nitrogen-def",
             name="Nitrogen Deficiency",
@@ -470,7 +470,7 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
     },
     "zinc_deficiency": {
         "id": "kb-zinc-def",
-        "keywords": ["zinc", "khaira", "white bud", "deficiency", "rusty", "bronzing", "internode"],
+        "keywords": ["zinc", "khaira", "white bud", "deficiency", "rusty", "bronzing", "internode", "जिंक", "खैरा", "कमी", "ਜਿੰਕ", "ਖ਼ੈਰਾ", "ਘਾਟ"],
         "cause": PossibleCause(
             id="cause-zinc-def",
             name="Zinc Deficiency (Khaira Disease / Bronzing)",
@@ -517,27 +517,40 @@ KB_DIAGNOSES: Dict[str, Dict[str, Any]] = {
 def match_kb_diagnoses_from_sources(query: str, crop_type: CropType, sources: List[EvidenceSource]) -> List[PossibleCause]:
     """Matches top retrieved RAG evidence sources against KB diagnosis registry using weighted keyword scoring."""
     query_lower = f"{crop_type} {query}".lower()
-    sources_text = " ".join([f"{src.title} {src.source} {src.snippet}" for src in sources]).lower()
-    
+
     scores: Dict[str, float] = {}
 
     for key, entry in KB_DIAGNOSES.items():
         key_crop = key.split("_")[0]
-        # Crop strictness: exclude diagnoses for other specific crops
+        is_nutrient = entry["cause"].category == "nutrient"
+
+        # Crop strictness: exclude diagnoses belonging to a different specific crop
         if crop_type and crop_type != "unknown":
             if key_crop in ["rice", "wheat", "maize", "cotton", "sugarcane", "tomato", "potato"] and key_crop != crop_type:
                 continue
 
         score = 0.0
+        # Crop match bonus: give strong bonus to crop-specific condition
         if crop_type and crop_type != "unknown" and crop_type in key_crop:
-            score += 15.0
+            score += 20.0
 
+        query_kw_matches = 0
         for kw in entry["keywords"]:
             kw_l = kw.lower()
             if kw_l in query_lower:
-                score += 5.0
-            if kw_l in sources_text:
-                score += 3.0
+                score += 8.0
+                query_kw_matches += 1
+
+        # Title/source evidence matching
+        for src in sources:
+            src_title_l = f"{src.title} {src.source}".lower()
+            for kw in entry["keywords"]:
+                if len(kw) > 3 and kw.lower() in src_title_l:
+                    score += 2.0
+
+        # Nutrient deficiencies (nitrogen, zinc) must NOT match unless query explicitly mentions nutrient deficiency symptoms
+        if is_nutrient and query_kw_matches == 0:
+            score = 0.0
 
         scores[key] = score
 
@@ -547,7 +560,11 @@ def match_kb_diagnoses_from_sources(query: str, crop_type: CropType, sources: Li
     # Select top scored keys
     matched_keys = [k for k in sorted_keys if scores[k] > 0]
     if not matched_keys:
-        matched_keys = sorted_keys
+        # If no positive matches, prioritize crop-matching condition first, never defaulting blindly to nutrient deficiency
+        crop_keys = [k for k in sorted_keys if crop_type and crop_type != "unknown" and crop_type in k.split("_")[0]]
+        matched_keys = crop_keys if crop_keys else [k for k in sorted_keys if KB_DIAGNOSES[k]["cause"].category != "nutrient"]
+        if not matched_keys:
+            matched_keys = sorted_keys
 
     results: List[PossibleCause] = []
     for idx, key in enumerate(matched_keys[:3]):

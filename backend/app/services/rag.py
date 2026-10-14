@@ -94,18 +94,18 @@ def retrieve_evidence(query: str, crop_type: str = "unknown", top_k: int = 3) ->
         fallback_docs = [
             EvidenceSource(
                 id="src-fb-1",
-                title="ICAR Diagnostic Guide for Cereal & Horticultural Crops",
+                title="ICAR Integrated Diagnostic Guide for Field & Horticultural Crops",
                 source="Indian Council of Agricultural Research (ICAR)",
                 url="https://www.icar.org.in",
-                snippet="Bacterial leaf blights and fungal leaf spots exhibit localized leaf margin yellowing, water-soaked chlorosis, and progressive necrosis under high humidity.",
+                snippet="Inspect leaf surfaces, stems, and roots for distinct lesion margins, fungal spores, or insect vectors. Differentiate biotic infections from environmental stress.",
                 relevance="high"
             ),
             EvidenceSource(
                 id="src-fb-2",
-                title="FAO Plant Nutrient & Pest Management Manual",
+                title="FAO Integrated Pest & Crop Health Management Manual",
                 source="Food and Agriculture Organization (FAO)",
                 url="https://www.fao.org",
-                snippet="Mobile nutrient deficiencies (such as Nitrogen and Potassium) initiate chlorosis in older foliage, whereas systemic pathogens cause expanding localized lesions.",
+                snippet="Systematic field scouting protocol: survey representative canopy zones, observe moisture and drainage conditions, and cross-reference localized symptoms.",
                 relevance="medium"
             )
         ]

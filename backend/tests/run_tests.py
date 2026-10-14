@@ -145,6 +145,75 @@ class TestBackendAPI(unittest.TestCase):
                 primary_cause_name.lower(),
                 f"Expected keyword '{tc['expected_name_keyword']}' in primary cause name '{primary_cause_name}' for crop {tc['cropType']}"
             )
+    def test_multilingual_hindi_punjabi_diagnosis(self):
+        """Tests that Hindi and Punjabi query symptoms correctly diagnose the proper condition rather than falling back to Nitrogen deficiency."""
+        multilingual_cases = [
+            {
+                "cropType": "wheat",
+                "textDescription": "ਕਣਕ ਦੇ ਪੱਤਿਆਂ ਤੇ ਪੀਲਾ ਰਤੂਆ ਅਤੇ ਹਲਦੀ ਪਾਊਡਰ ਦਿਸ ਰਿਹਾ ਹੈ",
+                "language": "pa",
+                "expected_name_keyword": "Rust",
+                "unexpected_keyword": "Nitrogen"
+            },
+            {
+                "cropType": "cotton",
+                "textDescription": "कपास की पत्तियों पर सफेद मक्खी और मरोड़िया रोग के लक्षण हैं",
+                "language": "hi",
+                "expected_name_keyword": "Whitefly",
+                "unexpected_keyword": "Nitrogen"
+            },
+            {
+                "cropType": "sugarcane",
+                "textDescription": "ਗੰਨੇ ਵਿੱਚ ਲਾਲ ਸੜਨ ਅਤੇ ਸ਼ਰਾਬ ਵਰਗੀ ਬੂ ਆ ਰਹੀ ਹੈ",
+                "language": "pa",
+                "expected_name_keyword": "Red Rot",
+                "unexpected_keyword": "Nitrogen"
+            },
+            {
+                "cropType": "rice",
+                "textDescription": "धान की पत्तियों पर जीवाणु पत्ती ब्लाइट के जल-भिग्न घाव हैं",
+                "language": "hi",
+                "expected_name_keyword": "Bacterial",
+                "unexpected_keyword": "Nitrogen"
+            }
+        ]
+
+        for tc in multilingual_cases:
+            payload = {
+                "userId": "multilingual-test-user",
+                "textDescription": tc["textDescription"],
+                "language": tc["language"],
+                "cropType": tc["cropType"]
+            }
+            res = self.client.post("/api/analyze", json=payload)
+            self.assertEqual(res.status_code, 200)
+            data = res.json()
+            primary_cause_name = data["possible_causes"][0]["name"]
+            self.assertIn(
+                tc["expected_name_keyword"].lower(),
+                primary_cause_name.lower(),
+                f"Expected '{tc['expected_name_keyword']}' in '{primary_cause_name}' for language {tc['language']}"
+            )
+            self.assertNotIn(
+                tc["unexpected_keyword"].lower(),
+                primary_cause_name.lower(),
+                f"'{tc['unexpected_keyword']}' should NOT be primary for query '{tc['textDescription']}'"
+            )
+
+    def test_nitrogen_deficiency_accuracy(self):
+        """Tests that Nitrogen deficiency is only diagnosed when explicitly described."""
+        # When user explicitly reports nitrogen deficiency symptoms
+        payload = {
+            "userId": "n-test-user",
+            "textDescription": "Lower older leaves are turning pale yellow starting from tips with stunted plant growth, nitrogen deficiency suspected",
+            "language": "en",
+            "cropType": "unknown"
+        }
+        res = self.client.post("/api/analyze", json=payload)
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        primary_cause_name = data["possible_causes"][0]["name"]
+        self.assertIn("Nitrogen", primary_cause_name)
 
 if __name__ == "__main__":
     unittest.main()
